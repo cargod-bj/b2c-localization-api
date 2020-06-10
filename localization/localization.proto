@@ -44,13 +44,13 @@ message LocalizationDto {
   // 当前翻译的最大长度
   uint32 max_length = 6;
   // 是否后台可用
-  string flag_be = 7;
+  uint32 flag_be = 7;
   // 是否前台可用
-  string flag_fe = 8;
+  uint32 flag_fe = 8;
   // 是否网站可用
-  string flag_website = 9;
+  uint32 flag_website = 9;
   // 是否app可用
-  string flag_app = 10;
+  uint32 flag_app = 10;
   // 当前翻译: 英语
   string value_en = 201;
   // 当前翻译: 马来语
