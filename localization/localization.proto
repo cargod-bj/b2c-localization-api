@@ -56,17 +56,17 @@ message LocalizationDto {
   // 是否app可用
   uint32 flag_app = 10;
   // 当前翻译: 英语
-  string value_en = 201;
+  string lang_en = 201;
   // 当前翻译: 马来语
-  string value_ms = 202;
+  string lang_ms = 202;
   // 当前翻译: 印度尼西亚语
-  string value_id = 203;
+  string lang_id = 203;
   // 当前翻译: 泰语
-  string value_th = 204;
+  string lang_th = 204;
   // 当前翻译: 印地语
-  string value_hi = 205;
+  string lang_hi = 205;
   // 当前翻译: 中文
-  string value_zh = 206;
+  string lang_zh = 206;
 }
 
 // 获取指定类型的所有dto
