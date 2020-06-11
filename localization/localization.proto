@@ -27,6 +27,10 @@ service Localization {
   //      list = List<LocalizationDto>
   //    }
   rpc List(LocalizationWhereDto) returns (common.Response) {}
+
+  // 发布最新的版本，如：json文件
+  // response.Data = nil
+  rpc Publish(LocalizationPublishDto) returns (common.Response) {}
 }
 
 // 新增本地化翻译dto
@@ -95,4 +99,9 @@ message LocalizationWhereDto {
   bool isLangHi = 15;
   // 是否获取中文内容，可以和Platform一起使用
   bool isLangZh = 16;
+}
+
+
+// 指定发布类型，如果不设置，默认发布所有
+message LocalizationPublishDto {
 }

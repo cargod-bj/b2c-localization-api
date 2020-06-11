@@ -60,6 +60,9 @@ type LocalizationService interface {
 	//      list = List<LocalizationDto>
 	//    }
 	List(ctx context.Context, in *LocalizationWhereDto, opts ...client.CallOption) (*common.Response, error)
+	// 发布最新的版本，如：json文件
+	// response.Data = nil
+	Publish(ctx context.Context, in *LocalizationPublishDto, opts ...client.CallOption) (*common.Response, error)
 }
 
 type localizationService struct {
@@ -124,6 +127,16 @@ func (c *localizationService) List(ctx context.Context, in *LocalizationWhereDto
 	return out, nil
 }
 
+func (c *localizationService) Publish(ctx context.Context, in *LocalizationPublishDto, opts ...client.CallOption) (*common.Response, error) {
+	req := c.c.NewRequest(c.name, "Localization.Publish", in)
+	out := new(common.Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Localization service
 
 type LocalizationHandler interface {
@@ -144,6 +157,9 @@ type LocalizationHandler interface {
 	//      list = List<LocalizationDto>
 	//    }
 	List(context.Context, *LocalizationWhereDto, *common.Response) error
+	// 发布最新的版本，如：json文件
+	// response.Data = nil
+	Publish(context.Context, *LocalizationPublishDto, *common.Response) error
 }
 
 func RegisterLocalizationHandler(s server.Server, hdlr LocalizationHandler, opts ...server.HandlerOption) error {
@@ -153,6 +169,7 @@ func RegisterLocalizationHandler(s server.Server, hdlr LocalizationHandler, opts
 		Update(ctx context.Context, in *LocalizationDto, out *common.Response) error
 		Get(ctx context.Context, in *common.IdDto, out *common.Response) error
 		List(ctx context.Context, in *LocalizationWhereDto, out *common.Response) error
+		Publish(ctx context.Context, in *LocalizationPublishDto, out *common.Response) error
 	}
 	type Localization struct {
 		localization
@@ -183,4 +200,8 @@ func (h *localizationHandler) Get(ctx context.Context, in *common.IdDto, out *co
 
 func (h *localizationHandler) List(ctx context.Context, in *LocalizationWhereDto, out *common.Response) error {
 	return h.LocalizationHandler.List(ctx, in, out)
+}
+
+func (h *localizationHandler) Publish(ctx context.Context, in *LocalizationPublishDto, out *common.Response) error {
+	return h.LocalizationHandler.Publish(ctx, in, out)
 }
