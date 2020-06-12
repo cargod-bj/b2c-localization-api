@@ -31,6 +31,10 @@ service Localization {
   // 发布最新的版本，如：json文件
   // response.Data = nil
   rpc Publish(LocalizationPublishDto) returns (common.Response) {}
+
+  // 获取指定类型的Map结果
+  // response.Data = List<LocalizationGetPublishedDto>
+  rpc GetPublishedMap(LocalizationGetPublishedWhere) returns (common.Response) {}
 }
 
 // 新增本地化翻译dto
@@ -105,3 +109,44 @@ message LocalizationWhereDto {
 // 指定发布类型，如果不设置，默认发布所有
 message LocalizationPublishDto {
 }
+
+// 获取指定类型的发布结果，必须指定一种语言类型和一种平台类型，否则报错
+message LocalizationGetPublishedWhere {
+  // 获取的语言类型，只支持一种
+  oneof lang_type {
+    // 是否获取英语内容，可以和Platform一起使用
+    bool isLangEn = 11;
+    // 是否获取马来语内容，可以和Platform一起使用
+    bool isLangMs = 12;
+    // 是否获取印度尼西亚语内容，可以和Platform一起使用
+    bool isLangId = 13;
+    // 是否获取泰语内容，可以和Platform一起使用
+    bool isLangTh = 14;
+    // 是否获取印地语内容，可以和Platform一起使用
+    bool isLangHi = 15;
+    // 是否获取中文内容，可以和Platform一起使用
+    bool isLangZh = 16;
+  }
+
+  // 获取的平台类型，只支持一种
+  oneof platform_type {
+    // 是否获取后台内容，可以和Lang一起使用
+    bool isPlatformBe = 1;
+    // 是否获取前台内容，可以和Lang一起使用
+    bool isPlatformFe = 2;
+    // 是否获取网页端内容，可以和Lang一起使用
+    bool isPlatformWebsite = 3;
+    // 是否获取app端内容，可以和Lang一起使用
+    bool isPlatformApp = 4;
+  }
+}
+
+
+// 获取指定类型的发布结果
+message LocalizationGetPublishedDto {
+  // 获取的翻译key值
+  string key = 1;
+  // 获取的翻译值
+  string lang = 2;
+}
+

@@ -63,6 +63,9 @@ type LocalizationService interface {
 	// 发布最新的版本，如：json文件
 	// response.Data = nil
 	Publish(ctx context.Context, in *LocalizationPublishDto, opts ...client.CallOption) (*common.Response, error)
+	// 获取指定类型的Map结果
+	// response.Data = List<LocalizationGetPublishedDto>
+	GetPublishedMap(ctx context.Context, in *LocalizationGetPublishedWhere, opts ...client.CallOption) (*common.Response, error)
 }
 
 type localizationService struct {
@@ -137,6 +140,16 @@ func (c *localizationService) Publish(ctx context.Context, in *LocalizationPubli
 	return out, nil
 }
 
+func (c *localizationService) GetPublishedMap(ctx context.Context, in *LocalizationGetPublishedWhere, opts ...client.CallOption) (*common.Response, error) {
+	req := c.c.NewRequest(c.name, "Localization.GetPublishedMap", in)
+	out := new(common.Response)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // Server API for Localization service
 
 type LocalizationHandler interface {
@@ -160,6 +173,9 @@ type LocalizationHandler interface {
 	// 发布最新的版本，如：json文件
 	// response.Data = nil
 	Publish(context.Context, *LocalizationPublishDto, *common.Response) error
+	// 获取指定类型的Map结果
+	// response.Data = List<LocalizationGetPublishedDto>
+	GetPublishedMap(context.Context, *LocalizationGetPublishedWhere, *common.Response) error
 }
 
 func RegisterLocalizationHandler(s server.Server, hdlr LocalizationHandler, opts ...server.HandlerOption) error {
@@ -170,6 +186,7 @@ func RegisterLocalizationHandler(s server.Server, hdlr LocalizationHandler, opts
 		Get(ctx context.Context, in *common.IdDto, out *common.Response) error
 		List(ctx context.Context, in *LocalizationWhereDto, out *common.Response) error
 		Publish(ctx context.Context, in *LocalizationPublishDto, out *common.Response) error
+		GetPublishedMap(ctx context.Context, in *LocalizationGetPublishedWhere, out *common.Response) error
 	}
 	type Localization struct {
 		localization
@@ -204,4 +221,8 @@ func (h *localizationHandler) List(ctx context.Context, in *LocalizationWhereDto
 
 func (h *localizationHandler) Publish(ctx context.Context, in *LocalizationPublishDto, out *common.Response) error {
 	return h.LocalizationHandler.Publish(ctx, in, out)
+}
+
+func (h *localizationHandler) GetPublishedMap(ctx context.Context, in *LocalizationGetPublishedWhere, out *common.Response) error {
+	return h.LocalizationHandler.GetPublishedMap(ctx, in, out)
 }
